@@ -15,7 +15,7 @@ class Job extends Model {
     }
     public function tags()
     {
-        return $this->belongsToMany(Tag::class , foreignPivotKey: 'job_listing_id');
+        return $this->belongsToMany(Tag::class , foreignPivotKey:'job_listing_id');
         // our class name is job and laravel thinks that the foreign key name should be 'job_id' bu out jobs in jobs_listings
     }
 };
