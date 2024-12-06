@@ -1,46 +1,26 @@
 <?php
 
+use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Job;
 
-Route::get('/', function () {
-    return view('home');
+Route::view('/' , 'home');
+
+Route::view('/contact', 'contact');
+
+Route::controller(JobController::class) ->group(function () {
+    Route::get('/jobs', 'index');
+
+    Route::get('/jobs/create', [JobController::class, 'create']);
+
+    Route::get('/jobs/{job}', 'show');// '/jobs/{id}' id {} this means this is a wild card  and anything after will use this route
+
+    Route::post('/jobs' , 'store');
+
+    Route::get('/jobs/{job}/edit', 'edit');
+
+    Route::patch('/jobs/{job}', 'update');
+
+    Route::delete('/jobs/{job}', 'destroy');
 });
 
-Route::get('/jobs', function () {
-    $jobs = Job::with('employer')->latest()->simplePaginate(3);
-
-    return view('jobs.index', [
-        'jobs' => $jobs
-    ]);
-});
-
-Route::get('/jobs/create', function () {
-    return view('jobs.create');
-});
-
-Route::get('/jobs/{id}', function ($id) { // '/jobs/{id}' id {} this means this is a wild card
-    $job = Job::find($id);                    // and anything after will use this route
-
-    return view('jobs.show', ['job' => $job]);
-});
-
-Route::post('/jobs', function () {
-
-    request()->validate([
-        'title' => ['required', 'min:3'],
-        'salary' => ['required', 'numeric'],
-    ]);
-
-    Job::create([
-        'title' => request('title'),
-        'salary' => request('salary'),
-        'employer_id' => 1,
-    ]);
-
-    return redirect('/jobs');
-});
-
-Route::get('/contact', function () {
-    return view('contact');
-});
+//Route::resource('jobs', JobController::class); ALTERNATİVE
