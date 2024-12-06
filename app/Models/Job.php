@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Job extends Model {
     use HasFactory;
+
     protected $table = 'job_listings';
-    protected $fillable = ['title','salary'];
+
+    //protected $fillable = ['employer_id','title','salary'];
+    protected $guarded = []; // nothing is guarded for mass assignment or you can use fillable
+
     public function employer()
     {
         return $this->belongsTo(Employer::class); // php artisan tinker -->  $job->employer;
