@@ -1,16 +1,19 @@
 <?php
 
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/' , 'home');
 
 Route::view('/contact', 'contact');
 
+//Route::resource('jobs', JobController::class); ALTERNATİVE
+
 Route::controller(JobController::class) ->group(function () {
     Route::get('/jobs', 'index');
 
-    Route::get('/jobs/create', [JobController::class, 'create']);
+    Route::get('/jobs/create', 'create');
 
     Route::get('/jobs/{job}', 'show');// '/jobs/{id}' id {} this means this is a wild card  and anything after will use this route
 
@@ -23,4 +26,7 @@ Route::controller(JobController::class) ->group(function () {
     Route::delete('/jobs/{job}', 'destroy');
 });
 
-//Route::resource('jobs', JobController::class); ALTERNATİVE
+//auth
+Route::get('/register', [RegisteredUserController::class , 'create']);
+
+
