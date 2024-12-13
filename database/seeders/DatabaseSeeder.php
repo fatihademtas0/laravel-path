@@ -21,6 +21,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'bla@gmail.com',
         ]);
 
-        //$this->call(JobSeeder::class);
+        $this->call(JobSeeder::class);
     }
 }

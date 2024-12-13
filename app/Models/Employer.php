@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Employer extends Model
 {
@@ -16,5 +17,10 @@ class Employer extends Model
         // $employer->jobs->first();  returns first job
         // $employer->jobs; returns the collection
         return $this->hasMany(Job::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

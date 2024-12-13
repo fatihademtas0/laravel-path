@@ -3,13 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class JobController extends Controller
 {
     public function index()
     {
-        $jobs = Job::with('employer')->latest()->simplePaginate(3);
+        $jobs = Job::with('employer') // employer ilişkisini de yüklüyoruz
+        ->orderBy('id', 'asc') // id'ye göre sıralama, 'asc' artan sıralama
+        ->simplePaginate(3); // Sayfalama, her sayfada 3 iş
 
         return view('jobs.index', [
             'jobs' => $jobs
@@ -45,11 +50,18 @@ class JobController extends Controller
 
     public function edit(JOB $job)
     {
+//        if(Gate::denise('edit-job', $job)) ALTERNATİVE OR İF THE USER İS UNAUTHORİZED DO SOMETHİNG
+//        {
+//            //
+//        }
+
         return view('jobs.edit', ['job' => $job]);
     }
 
     public function update(JOB $job)
     {
+        Gate::authorize('edit-job', $job);
+
         // validate
         request()->validate([
             'title' => ['required', 'min:3'],
@@ -69,6 +81,7 @@ class JobController extends Controller
 
     public function destroy(JOB $job)
     {
+        Gate::authorize('edit-job', $job);
         $job->delete();
 
         return redirect('/jobs');

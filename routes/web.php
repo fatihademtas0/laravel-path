@@ -11,27 +11,28 @@ Route::view('/contact', 'contact');
 
 //Route::resource('jobs', JobController::class); ALTERNATİVE
 
-Route::controller(JobController::class) ->group(function () {
+Route::controller(JobController::class) ->group(function ()
+{
     Route::get('/jobs', 'index');
 
     Route::get('/jobs/create', 'create');
 
     Route::get('/jobs/{job}', 'show');// '/jobs/{id}' id {} this means this is a wild card  and anything after will use this route
 
-    Route::post('/jobs' , 'store');
+    Route::post('/jobs' , 'store')->middleware('auth');
 
-    Route::get('/jobs/{job}/edit', 'edit');
+    Route::get('/jobs/{job}/edit', 'edit')->middleware('auth')->can('edit-job','job');
 
-    Route::patch('/jobs/{job}', 'update');
+    Route::patch('/jobs/{job}', 'update')->middleware('auth');
 
-    Route::delete('/jobs/{job}', 'destroy');
+    Route::delete('/jobs/{job}', 'destroy')->middleware('auth');
 });
 
 //auth
 Route::get('/register', [RegisteredUserController::class , 'create']);
 Route::post('/register', [RegisteredUserController::class , 'store']);
 
-Route::get('/login' , [SessionController::class , 'create']);
+Route::get('/login' , [SessionController::class , 'create'])->name('login');
 Route::post('/login' , [SessionController::class , 'store']);
 Route::post('/logout' , [SessionController::class , 'destroy']);
 
