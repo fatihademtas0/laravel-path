@@ -23,6 +23,7 @@ class TranslateJob implements ShouldQueue
      */
     public function handle(): void
     {
+        //AI::translate($this->jobListing->description, 'turkish');
         // always restart your worker after a change
         logger('Translating '. $this->jobListing->title . ' to Turkish.');
     }
